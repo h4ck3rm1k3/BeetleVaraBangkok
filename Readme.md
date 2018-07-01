@@ -33,7 +33,49 @@ https://github.com/tschellenbach/Django-facebook/blob/master/django_facebook/mod
 * People
 * Contacts
 * Websites
+
+  html,parser
+  Markdown, parser
+  mediawiki,
+  pandoc
+  
 * APIS
+
+  * APIS with openapi/swagger interfaces
+    Be able to build swagger interfaces for other apis by describing them
+
+  * be able to search for apis
+  like this
+    https://www.programmableweb.com/search/wikipedia
+    
+  * Other APIS for wikidata
+    https://www.mediawiki.org/wiki/Wikidata_Query_Service/User_Manual
+    * SPARQL
+      https://query.wikidata.org/sparql?query=SPARQL
+      Triples
+      https://query.wikidata.org/bigdata/ldf?subject=http%3A%2F%2Fwww.wikidata.org%2Fentity%2FQ146
+
+      
+    * Mediawiki
+    open search    https://www.mediawiki.org/wiki/API:Opensearch
+    mediawiki rest api https://www.mediawiki.org/wiki/REST_API
+
+  * Apis with existing python interfaces
+    Extract information from existing python code, introspection
+    Capture network packages and decode them
+    Capture log files and messages
+    Intercept functions at runtime
+    Be able to generate reprsentations :
+       1. urls, abs and relative
+       2. files and network packages
+       3. Blobs and strings in memory, lines or parts string
+       4. Parsing of strings and splitting them, giving types
+       5. Handling of ast data as needed, transforming to different forms.
+
+       Json Schema
+       	    be able to extract out properties and types from json schema and map them onto Model classes in django
+	    like the xsdtodjgno https://github.com/tuffnatty/xsd_to_django_model
+
 * Topics
 * Tracks
 * Speakers

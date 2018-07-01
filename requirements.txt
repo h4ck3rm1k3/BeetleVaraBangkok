@@ -1,31 +1,20 @@
+-e git+ssh://git@github.com/h4ck3rm1k3/django.git#egg=django
 -e git://github.com/38elements/django-simple-jsonschema.git#egg=django-simple-jsonschema
 -e git://github.com/Aristotle-Metadata-Enterprises/django-jsonforms#egg=django-jsonforms
-
-
 -e git://github.com/Yupeek/django-rest-models.git#egg=django-rest-models
 -e git://github.com/bcwaldon/warlock.git#egg=warlock
 -e git://github.com/cwacek/python-jsonschema-objects.git#egg=python-jsonschema-objects
 -e git://github.com/django-parler/django-parler-rest.git#egg=django-parler-rest
 -e git://github.com/dsc/bunch#egg=bunch
 -e git://github.com/frx08/jsonschema2popo.git#egg=jsonschema2popo
--e git://github.com/h4ck3rm1k3/django-rest-framework.git#egg=django-rest-framework
+-e git://github.com/h4ck3rm1k3/django-rest-framework.git#egg=djangorestframework
 -e git://github.com/jazzband/django-model-utils.git#egg=django-model-utils
 -e git://github.com/marcgibbons/django-rest-swagger.git#egg=django-rest-swagger
 -e git://github.com/paulcwatts/drf-json-schema.git#egg=drf-json-schema
 -e git://github.com/petrounias/json-schema-toolkit.git#egg=json-schema-toolkit
 -e git://github.com/podio/valideer#egg=valideer
-
-
-#-e git://github.com/Julian/jsonschema#egg=jsonschema
 -e git://github.com/h4ck3rm1k3/jsonschema#egg=jsonschema
 
-
-
 ### python wrappers around specs
-#-e git://github.com/OAI/OpenAPI-Specification.git#egg=OpenAPI-Specification
-#-e git://github.com/h4ck3rm1k3/OpenAPI-Specification.git#egg=OpenAPI-Specification
--e git+ssh://git@github.com/h4ck3rm1k3/OpenAPI-Specification.git#egg=OpenAPI-Specification
-
-
-#-e git://github.com/json-schema-org/json-schema-spec.git#egg=json-schema-spec
--e git+ssh://git@github.com/h4ck3rm1k3/json-schema-spec.git#egg=json-schema-spec
+-e git+ssh://git@github.com/h4ck3rm1k3/OpenAPI-Specification.git#egg=openapi-specification-python
+-e git+ssh://git@github.com/h4ck3rm1k3/json-schema-spec.git#egg=json-schema-spec-python
