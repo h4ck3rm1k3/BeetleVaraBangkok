@@ -1,0 +1,4 @@
+- model: SourceSites.sourcesite
+  fields: {
+    website: '<$1>'
+    }

@@ -17,7 +17,12 @@ for x in [
         #'TimeFramedModel',
         #'TimeStampedModel'
 ]:
-    admin.site.register(getattr(SourceSites.models, x))
+
+    try :
+        admin.site.register(getattr(SourceSites.models, x), getattr(SourceSites.models, x + "Admin"))
+    except Exception as e:
+        admin.site.register(getattr(SourceSites.models, x))
+        
 
 #
 #admin.site.register(Author)

@@ -160,6 +160,16 @@ Create source sites
      ./manage.py createsuperuser
      ./manage.py makemigrations
      ./manage.py migrate
+
+# Populate some links
+
+     pandoc Readme.md  | grep http | cut "-d " -f2 | grep https | cut '-d<' -f1  > links.txt
+     for x in `cat links.txt`; do sed -e "s%<\$1>%$x%g" SourceSites/fixtures/sites.tt; done  > SourceSites/fixtures/baresites.yaml
+     ./manage.py loaddata baresites
+
+     cat requirements.txt | cut -d/ -f3- | cut -d\# -f1 | sed -e's/.git//g' | grep git >> gitlinks.txt
+     for x in `cat gitlinks.txt`; do sed -e "s%<\$1>%$x%g" SourceSites/fixtures/sites.tt; done  > SourceSites/fixtures/gitsites.yaml
+     ./manage.py loaddata gitsites
  
 Projects to evaluate
 https://github.com/MattBroach/DjangoRestMultipleModels.git

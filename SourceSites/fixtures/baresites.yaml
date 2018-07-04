@@ -1,0 +1,36 @@
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'https://github.com/putmantime/CMOD.Django'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'https://github.com/gunyarakun/django-wikipedia-search'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'https://github.com/willemarcel/osmcha-django/'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'https://github.com/tschellenbach/Django-facebook/blob/master/django_facebook/models.py'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'https://github.com/caioariede/django-location-field'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'https://query.wikidata.org/sparql?query=SPARQL'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'https://github.com/mbrochh/django-graphql-apollo-react-demo'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'https://docs.djangoproject.com/en/2.0/intro/tutorial01/'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'https://github.com/jazzband/django-model-utils'
+    }

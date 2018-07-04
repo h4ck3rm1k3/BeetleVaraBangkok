@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib import admin
 from model_utils.models import StatusModel, TimeFramedModel, TimeStampedModel
 from model_utils import Choices
 from model_utils.managers import InheritanceManager
@@ -19,7 +19,7 @@ class SourceSite(NamedModel, StatusModel):
     STATUS = Choices('new','working','failed','not resolving','not responding','noaccess', 'overloaded')
         
     objects = InheritanceManager()
-    website = models.CharField(max_length=200)
+    website = models.CharField(max_length=500,unique=True)
 
     #categories = models.ManyToManyField(
     #    'category.Category',
@@ -30,7 +30,9 @@ class SourceSite(NamedModel, StatusModel):
     #    'category.Tag',
     #    help_text='Tag this item.'
     #)
-    
+class SourceSiteAdmin(admin.ModelAdmin):
+     list_display = ('name', 'website')
+        
 class ApiSourceSite(SourceSite):
 
     # what does this api provide

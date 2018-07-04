@@ -1,0 +1,80 @@
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/h4ck3rm1k3/simplejson'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/h4ck3rm1k3/django'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/38elements/django-simple-jsonschema'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/Aristotle-Metadata-Enterprises/django-jsonforms'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/Yupeek/django-rest-models'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/bcwaldon/warlock'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/cwacek/python-jsonschema-objects'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/django-parler/django-parler-rest'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/dsc/bunch'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/frx08/jsonschema2popo'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/h4ck3rm1k3/django-rest-framework'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/jazzband/django-model-utils'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/marcgibbons/django-rest-swagger'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/paulcwatts/drf-json-schema'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/petrounias/json-schema-toolkit'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/podio/valideer'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/h4ck3rm1k3/jsonschema'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/h4ck3rm1k3/OpenAPI-Specification'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/h4ck3rm1k3/json-schema-spec'
+    }
+- model: SourceSites.sourcesite
+  fields: {
+    website: 'github.com/h4ck3rm1k3/django-category'
+    }
