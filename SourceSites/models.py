@@ -1,7 +1,8 @@
 from django.db import models
 
-from model_utils.models import StatusModel
+from model_utils.models import StatusModel, TimeFramedModel, TimeStampedModel
 from model_utils import Choices
+from model_utils.managers import InheritanceManager
 
 class NamedModel(models.Model):
     """ A base model with a name """
@@ -12,41 +13,68 @@ class NamedModel(models.Model):
         abstract = True
 
 class SourceSite(NamedModel, StatusModel):
+#    class Meta:
+#        app_label = 'cal'
+
+    STATUS = Choices('new','working','failed','not resolving','not responding','noaccess', 'overloaded')
+        
     objects = InheritanceManager()
     website = models.CharField(max_length=200)
 
-class ApiPath(SourceSite):
-    paths = models.ManyToManyField(ApiPath)    
-
-# Info api metdata
-# Contact api contact
-
-
-class ApiSourceSite(SourceSite):
-    paths = models.ManyToManyField(ApiPath)    
-
-class Authentication(NamedModel, StatusModel):
-    STATUS = Choices('new','working','failed','compromised')
-    class Meta:
-        abstract = True
+    #categories = models.ManyToManyField(
+    #    'category.Category',
+    #    help_text='Categorize this item.'
+    #)
     
-class SimpleAuthentication(Authentication):
+    #tags = models.ManyToManyField(
+    #    'category.Tag',
+    #    help_text='Tag this item.'
+    #)
+    
+class ApiSourceSite(SourceSite):
+
+    # what does this api provide
+    # https://www.programmableweb.com/apis/directory
+    # https://github.com/toddmotto/public-apis
+    description = models.CharField(max_length=200)
+    https = models.BooleanField(default=1)
+    cors = models.BooleanField(default=1)
+    
+    
+
+class Authentication(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
+    """
+    Authentication is the base class of all types of authentication, it has a status and time information.
+    The end time is set when the auth is no longer valid.
+    """
+    STATUS = Choices('new','working','failed','compromised')
+    TYPE = Choices('oauth2','simple','ssh')
+
     password = models.CharField(max_length=200)
     userid = models.CharField(max_length=100)
-
-class TokenAuthentication(Authentication):
     token = models.CharField(max_length=255)
-    userid = models.BigIntegerField(unique=True)
     
-class OAuth2Authentication(Authentication):
-    token = models.CharField(max_length=255)
-    userid = models.BigIntegerField(unique=True)
     
 
-class Profile(models.Model):
-    sites = models.ManyToManyField(SourceSite)
-    user = models.OneToOneField(User)
-    auth = models.ForeignKey(Authentication, null=True)
+class Profile(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
+    """
+    The Profile is an account on many sites that has a status.
+    """
+    #sites2 = models.ManyToManyField(SourceSite)
+    auth = models.ForeignKey(Authentication, null=True, on_delete=models.SET_NULL)
+    STATUS = Choices('new','working','failed','disabled','comprimised')
+    
+class Agent(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
+    """
+    A host/process that runs access to other hosts
+    """
+    STATUS = Choices('new','working','failed','not resolving','not responding','noaccess', 'overloaded')    
 
-class AccessSession(models.Model):    
-     name = models.CharField(max_length=100)
+class AccessSession(StatusModel, TimeFramedModel, TimeStampedModel):
+    """
+    Session to access a website, 
+    """
+    STATUS = Choices('new','working','failed','not resolving','not responding','noaccess')
+    site = models.ForeignKey(SourceSite,null=True, on_delete=models.SET_NULL)
+    auth = models.ForeignKey(Authentication, null=True, on_delete=models.SET_NULL)
+    agent = models.ForeignKey(Agent,null=True, on_delete=models.SET_NULL)

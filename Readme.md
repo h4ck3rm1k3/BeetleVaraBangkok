@@ -1,16 +1,41 @@
 # codename : BeetleVaraBangkok
-Model for an api access tool used to create a conference
+
+Social media tool used to create a conference via access to various apis.
+
+# Sprints
+
+1. Collection of web resources, bookmarks.
+2. Import bookmarks
+3. Crawl pages
+4. Find wikipedia/wikidata articles that reference pages
+
+# Big Long Term Goals
+Collect information about target locations, people, audience, speakers, topics
+and present them to curation team for selection, evaluation, ranking and decision.
+Resource scheduling and planning algorithms are needed.
+Feedback from public needs to be collected.
+Tokens are used to measure resource usage, votes and other key measurements.
+Decentralized system, run your own node, federate, share data as needed.
+Compile the python code to run as a mobile app. https://kivy.org/#home maybe
+
 
 # Data Sources
 List of Sites that provide APIs, each api would have a form of data Model
+
+* Yacy like network of search
+http://search.yacy.net/
+
+* Common crawl like repository of needed websites.
+https://commoncrawl.org/
+
 * Wikidata
 https://github.com/putmantime/CMOD.Django
 
 * Wikipedia
 https://github.com/gunyarakun/django-wikipedia-search
-* Openstreetmap
 
-  https://github.com/willemarcel/osmcha-django/
+* Openstreetmap
+https://github.com/willemarcel/osmcha-django/
   
 * Github
 * Reddit
@@ -132,7 +157,10 @@ Create source sites
 
      python3.7 -m pip install -r requirements.txt
 
-
+     ./manage.py createsuperuser
+     ./manage.py makemigrations
+     ./manage.py migrate
+ 
 Projects to evaluate
 https://github.com/MattBroach/DjangoRestMultipleModels.git
 https://docs.djangoproject.com/en/2.0/topics/settings/

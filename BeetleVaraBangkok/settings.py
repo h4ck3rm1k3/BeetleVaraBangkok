@@ -25,12 +25,24 @@ SECRET_KEY = 'nwr5+c%n9wtj@=d*ric^+_$_l(i2$k41q%eb$f512frs$w((ow'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'debian-build-speed' ,
+     '192.168.1.5' 
+]
 
 
 # Application definition
+SITE_ID = 1
 
 INSTALLED_APPS = [
+    'SourceSites',
+    'SwaggerApi',
+    'JsonSchema',
+    'django.contrib.sites',
+    'category',
+    
+    #'sites',
+    # 'object_tools',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

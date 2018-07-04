@@ -1,3 +1,4 @@
+-e git+ssh://git@github.com/h4ck3rm1k3/simplejson.git#egg=simplejson
 -e git+ssh://git@github.com/h4ck3rm1k3/django.git#egg=django
 -e git://github.com/38elements/django-simple-jsonschema.git#egg=django-simple-jsonschema
 -e git://github.com/Aristotle-Metadata-Enterprises/django-jsonforms#egg=django-jsonforms
@@ -18,3 +19,6 @@
 ### python wrappers around specs
 -e git+ssh://git@github.com/h4ck3rm1k3/OpenAPI-Specification.git#egg=openapi-specification-python
 -e git+ssh://git@github.com/h4ck3rm1k3/json-schema-spec.git#egg=json-schema-spec-python
+
+-e git+ssh://git@github.com/h4ck3rm1k3/django-category.git#egg=django-category
+
