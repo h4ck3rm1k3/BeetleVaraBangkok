@@ -64,7 +64,18 @@ class BeautifulSoupHTMLParser(HTMLParser):
         # order. It's a list of closing tags we've already handled and
         # will ignore, assuming they ever show up.
         self.already_closed_empty_element = []
-    
+
+    def error(self, msg):
+        """In Python 3, HTMLParser subclasses must implement error(), although this
+        requirement doesn't appear to be documented.
+
+        In Python 2, HTMLParser implements error() as raising an exception.
+
+        In any event, this method is called only on very strange markup and our best strategy
+        is to pretend it didn't happen and keep going.
+        """
+        warnings.warn(msg)
+        
     def handle_startendtag(self, name, attrs):
         # This is only called when the markup looks like
         # <tag/>.
@@ -213,6 +224,7 @@ class HTMLParserTreeBuilder(HTMLTreeBuilder):
         parser.soup = self.soup
         try:
             parser.feed(markup)
+            parser.close()
         except HTMLParseError, e:
             warnings.warn(RuntimeWarning(
                 "Python's built-in HTMLParser cannot parse the given document. This is not a bug in Beautiful Soup. The best solution is to install an external parser (lxml or html5lib), and use Beautiful Soup with that parser. See http://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-a-parser for help."))

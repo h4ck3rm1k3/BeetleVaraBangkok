@@ -1,4 +1,20 @@
-= 4.6.0 (Unreleased) =
+= Unreleased
+
+* Stop data loss when encountering an empty numeric entity, and
+  possibly in other cases.  Thanks to tos.kamiya for the fix. [bug=1698503]
+
+* Improved the warning given when no parser is specified. [bug=1780571]
+
+* Fixed code that was causing deprecation warnings in recent Python 3
+  versions. Includes a patch from Ville Skyttä. [bug=1778909] [bug=1689496]
+
+* Fixed a Windows crash in diagnose() when checking whether a long
+  markup string is a filename. [bug=1737121]
+
+* Stopped HTMLParser from raising an exception in very rare cases of
+  bad markup. [bug=1708831]
+
+= 4.6.0 (20170507) =
 
 * Added the `Tag.get_attribute_list` method, which acts like `Tag.get` for
   getting the value of an attribute, but which always returns a list,

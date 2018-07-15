@@ -55,6 +55,7 @@ source ../py2-install-test-virtualenv/bin/activate
 python setup.py install
 echo "EXPECT HTML ON LINE BELOW"
 (cd .. && python -c "from bs4 import _s; print(_s('<a>foo', 'html.parser'))")
+echo
 # That should print '<a>foo</a>'
 deactivate
 rm -rf ../py2-install-test-virtualenv
