@@ -1,3 +1,6 @@
+from celery import Celery
+app = Celery()
+
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BeetleVaraBangkok.settings')
 import hashlib
@@ -10,6 +13,14 @@ import RdfGraph.models
 from django.db import transaction
 import pprint
 from django.core.exceptions import ObjectDoesNotExist
+import html5lib
+#import serpy
+import requests
+import collections
+from xmljson import badgerfish as bf
+import json
+
+# global cache
 seen = {}
 
 def cache(c, **kv):
@@ -32,43 +43,68 @@ def cache(c, **kv):
     seen[ckey]=o
     return o
 
-    
+# test create_node(RdfGraph.models.SoBlank,'s_blank_id','p_uri_id',blank, 'oblank_id', 'obj_id' )
+def create_node(node_type, s_blank_id, p_uri_id, ckey, oname, cvalue):
+    cvalues = { ckey : cvalue }
+    no = cache(node_type,**cvalues)
+    ovalues={ oname : no }
+    st = RdfGraph.models.Triple(
+        s_blank_id = s_blank_id,
+        p_uri_id= p_uri_id,
+        **ovalues
+        )
+    if no:
+        #pprint.pprint (no.__dict__)
+        no.save()
+    return st
+
 def r(x) :
+  """
+    Recurse over json tree
+  """
+
+  # start with a simple root
   parts=[["root","root",x]  ]
+
+  # iterate over the parts in a non recursive fashion
   while len(parts) > 0:
+      
+    # pop the last one off, is array of [parent, predicate, child]       
     t1 = parts.pop()
 
-    ##
-    sid = t1[0] # subject is passed as a string that is looked pu
+    sid = t1[0] # subject is passed as a string
+
+    # cache the string id
     s_blank_id = cache (RdfGraph.models.SoBlank,blank=sid) # the object representing the subject
-    
+
+    # cache the predicate
     p_uri_id=cache(RdfGraph.models.PUris,url=t1[1]) # predicate
 
 
-    t = t1[2] # subject is passed as a string that is looked up
+    t = t1[2] # target
 
     # object created
     no = None
 
-    # statemente created
+    # statement created
     st = None
 
 
-    #
-
     if isinstance(t,collections.OrderedDict) or isinstance(t,dict):
 
-        strv = str(t)
-        obj_id = hashlib.md5(strv.encode('utf-8')).hexdigest() # calculate a md5sun
-        #str(id(t))
+        # if the object is a dictionary object, a complex object
         
-        o_blank_id=cache(RdfGraph.models.SoBlank,blank=obj_id) # object
+        strv = str(t) # convert the entire object to a string, this could be slow for large object
+        obj_id = hashlib.md5(strv.encode('utf-8')).hexdigest() # calculate a md5sun of the entire object
 
+        o_blank_id=cache(RdfGraph.models.SoBlank,blank=obj_id) # lookup the object by md5
         st = RdfGraph.models.Triple(
             s_blank_id = s_blank_id,
             p_uri_id= p_uri_id,
             o_blank_id=o_blank_id
         )
+
+        # go over all the key value pairs
         for x,v in t.items():
             parts.append([obj_id,x, v])
             
@@ -87,19 +123,38 @@ def r(x) :
             o_blit_id=no
         )
     elif isinstance(t,int):
-        no = cache(RdfGraph.models.IntLiteral,value=t)
-        st = RdfGraph.models.Triple(
-            s_blank_id = s_blank_id,
-            p_uri_id= p_uri_id,
-            o_intlit_id=no
-        )
+        if abs(t)>9223372036854776000: # huge number
+            # store as string
+            no = cache(RdfGraph.models.StrLiteral,text=t) # object
+            st = RdfGraph.models.Triple(
+                s_blank_id = s_blank_id,
+                p_uri_id= p_uri_id,
+                o_strlit_id=no
+            )
+        else:
+            no = cache(RdfGraph.models.IntLiteral,value=t)
+            st = RdfGraph.models.Triple(
+                s_blank_id = s_blank_id,
+                p_uri_id= p_uri_id,
+                o_intlit_id=no
+            )
+            
     elif isinstance(t,float):
-        no = cache(RdfGraph.models.FloatLiteral,value=t)
-        st = RdfGraph.models.Triple(
-            s_blank_id = s_blank_id,
-            p_uri_id= p_uri_id,
-            o_flit_id=no
-        )
+        if abs(t)>9223372036854776000.0: # huge number
+            # store as string
+            no = cache(RdfGraph.models.StrLiteral,text=t) # object
+            st = RdfGraph.models.Triple(
+                s_blank_id = s_blank_id,
+                p_uri_id= p_uri_id,
+                o_strlit_id=no
+            )
+        else:
+            no = cache(RdfGraph.models.FloatLiteral,value=t)
+            st = RdfGraph.models.Triple(
+                s_blank_id = s_blank_id,
+                p_uri_id= p_uri_id,
+                o_flit_id=no
+            )
     elif isinstance(t,str):
         no = cache(RdfGraph.models.StrLiteral,text=t) # object
         
@@ -118,18 +173,17 @@ def r(x) :
     else:
       print (type(t))
 
-    if no:
-        #pprint.pprint (no.__dict__)
-        no.save()
 
     if st:
         #pprint.pprint (st.__dict__)
         st.save()
-        
-with open("test.json") as inf:
-    tree =json.load(inf)
-    with transaction.atomic():
-        r(tree)
+
+@app.task
+def load_json(fn):
+    with open(fn) as inf:
+        tree =json.load(inf)
+        with transaction.atomic():
+            r(tree)
 
 def report():
     cl = {'k':keys,'t':texts,'a':attrs}
@@ -137,3 +191,29 @@ def report():
         for x in cl[c]:
             print (c, x, cl[c][x])
 
+
+@app.task
+def parse_html_url(url, outfile):
+    s = requests.get(url)
+    h = s.text
+    document = html5lib.parse(h)
+    tree = bf.data(document)
+    with open(outfile,'w') as of:
+        json.dump(fp=of,obj=tree)
+
+@app.task
+def parse_html_file(path, outfile):
+    s = open(path)
+    h = ""
+    for x in s:
+        h = h + x
+    document = html5lib.parse(h)
+    tree = bf.data(document)
+    with open(outfile,'w') as of:
+        json.dump(fp=of,obj=tree)
+
+if __name__ == '__main__':
+    #app.worker_main()
+    j = "test.json"
+    #parse_html_file("./SourceSites/fixtures/std.html", j)
+    load_json(j)

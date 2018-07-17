@@ -25,3 +25,10 @@
 -e git+ssh://git@github.com/clarkduvall/serpy.git#egg=serpy
 -e bzr+lp:beautifulsoup#egg=beautifulsoup
 -e git+ssh://git@github.com/sanand0/xmljson.git#egg=xmljson
+
+
+# celery
+-e git+ssh://git@github.com/celery/celery.git#egg=celery
+
+# flower the front end for celery
+-e git+ssh://git@github.com/mher/flower.git#egg=flower

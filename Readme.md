@@ -181,3 +181,21 @@ https://github.com/wq/wq.db
 Docs to eval:
 https://ultimatedjango.com/blog/how-to-consume-rest-apis-with-django-python-reques/
 
+
+
+# Celery
+
+## install rabbit mq
+$ sudo rabbitmqctl add_user myuser mypassword
+$ sudo rabbitmqctl add_vhost myvhost
+$ sudo rabbitmqctl set_user_tags myuser mytag
+$ sudo rabbitmqctl set_permissions -p myvhost myuser ".*" ".*" ".*"
+
+## setup config
+edit flowerconfig.py
+
+## start  flower
+python3.7 -m flower  --port=5555
+
+## start worker
+python3.7 -m  celery -A process2 worker --loglevel=info
