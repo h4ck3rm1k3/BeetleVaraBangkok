@@ -97,12 +97,7 @@ def r(x) :
         strv = str(t) # convert the entire object to a string, this could be slow for large object
         obj_id = hashlib.md5(strv.encode('utf-8')).hexdigest() # calculate a md5sun of the entire object
 
-        o_blank_id=cache(RdfGraph.models.SoBlank,blank=obj_id) # lookup the object by md5
-        st = RdfGraph.models.Triple(
-            s_blank_id = s_blank_id,
-            p_uri_id= p_uri_id,
-            o_blank_id=o_blank_id
-        )
+        st = create_node(RdfGraph.models.SoBlank,s_blank_id,p_uri_id,'blank', 'o_blank_id', obj_id )
 
         # go over all the key value pairs
         for x,v in t.items():
@@ -116,60 +111,28 @@ def r(x) :
         nm = nm + 1
         
     elif isinstance(t,bool):
-        no = cache(RdfGraph.models.BLiteral,value=t)
-        st = RdfGraph.models.Triple(
-            s_blank_id = s_blank_id,
-            p_uri_id= p_uri_id,
-            o_blit_id=no
-        )
+        st = create_node(RdfGraph.models.BLiteral,s_blank_id,p_uri_id,'value', 'o_blit_id', t )
+
     elif isinstance(t,int):
         if abs(t)>9223372036854776000: # huge number
             # store as string
-            no = cache(RdfGraph.models.StrLiteral,text=t) # object
-            st = RdfGraph.models.Triple(
-                s_blank_id = s_blank_id,
-                p_uri_id= p_uri_id,
-                o_strlit_id=no
-            )
+            st = create_node(RdfGraph.models.StrLiteral,s_blank_id,p_uri_id,'text', 'o_strlit_id', t )
         else:
-            no = cache(RdfGraph.models.IntLiteral,value=t)
-            st = RdfGraph.models.Triple(
-                s_blank_id = s_blank_id,
-                p_uri_id= p_uri_id,
-                o_intlit_id=no
-            )
+            st = create_node(RdfGraph.models.IntLiteral,s_blank_id,p_uri_id,'value', 'o_intlit_id', t )
             
     elif isinstance(t,float):
         if abs(t)>9223372036854776000.0: # huge number
             # store as string
-            no = cache(RdfGraph.models.StrLiteral,text=t) # object
-            st = RdfGraph.models.Triple(
-                s_blank_id = s_blank_id,
-                p_uri_id= p_uri_id,
-                o_strlit_id=no
-            )
+            st = create_node(RdfGraph.models.StrLiteral,s_blank_id,p_uri_id,'text', 'o_strlit_id', t )
         else:
-            no = cache(RdfGraph.models.FloatLiteral,value=t)
-            st = RdfGraph.models.Triple(
-                s_blank_id = s_blank_id,
-                p_uri_id= p_uri_id,
-                o_flit_id=no
-            )
+            st = create_node(RdfGraph.models.FloatLiteral,s_blank_id,p_uri_id,'value', 'o_flit_id', t )
+
     elif isinstance(t,str):
-        no = cache(RdfGraph.models.StrLiteral,text=t) # object
-        
-        st = RdfGraph.models.Triple(
-            s_blank_id = s_blank_id,
-            p_uri_id= p_uri_id,
-            o_strlit_id=no
-        )
+        st = create_node(RdfGraph.models.StrLiteral,s_blank_id,p_uri_id,'text', 'o_strlit_id', t )
+
     elif isinstance(t,unicode):
-        no = cache(RdfGraph.models.StrLiteral,text=t) # object
-        st = RdfGraph.models.Triple(
-            s_blank_id = s_blank_id,
-            p_uri_id= p_uri_id,
-            o_strlit_id=no
-        )
+        st = create_node(RdfGraph.models.StrLiteral,s_blank_id,p_uri_id,'text', 'o_strlit_id', t )
+
     else:
       print (type(t))
 
