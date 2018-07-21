@@ -199,3 +199,14 @@ python3.7 -m flower  --port=5555
 
 ## start worker
 python3.7 -m  celery -A process2 worker --loglevel=info
+
+
+# TODO
+remove the _id from field names because they are double
+
+
+# debug django backend
+import logging
+log = logging.getLogger('django.db.backends')
+log.setLevel(logging.DEBUG)
+log.addHandler(logging.StreamHandler())

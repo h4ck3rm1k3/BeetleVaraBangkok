@@ -12,56 +12,58 @@ class BaseUris(models.Model):
         abstract = True
         
 class SoUris(BaseUris):
-    "SubjectObjectUri"
+    "URIS that can be subjects or objects"
     
 class PUris(BaseUris):
-    "PredicateUri"
+    "PredicateUri predicates are fields"
 
 class CUris(BaseUris):
-    "ContextUri"
+    "ContextUri a context is used to group triples"
 
 class TUris(BaseUris):
-    "LiteralTypeUri"
+    "LiteralTypeUri types of literals, can refer to types of strings, types of integers and floats etc"
     
 class SoBlank(models.Model):
+    """
+    Blanks are used for intermediate objects with no name or uri
+    """
     blank = models.TextField(unique=True, null=False)
 
+
 class OLiteral(models.Model):
+    """
+    Typed literal strings
+    """
     ntype = models.ForeignKey(TUris, null=True, on_delete=models.SET_NULL)
     lang = models.CharField(max_length=10)
     text = models.TextField(unique=True, null=False)
 
-class StrLiteral(models.Model):
-    lang = models.CharField(max_length=10)
-    text = models.TextField(unique=True, null=False)
     
-class BLiteral(models.Model):
-    value = models.BooleanField(null=False)
-
 class IntLiteral(models.Model):
+    ntype = models.ForeignKey(TUris, null=True, on_delete=models.SET_NULL)
     value = models.IntegerField(null=False)
 
 class FloatLiteral(models.Model):
+    ntype = models.ForeignKey(TUris, null=True, on_delete=models.SET_NULL)
     value = models.FloatField(null=False)
 
 class Triple(models.Model):
 
     # subject
-    s_uri_id = models.ForeignKey(SoUris, null=True, on_delete=models.SET_NULL, related_name="source_triple")
-    s_blank_id = models.ForeignKey(SoBlank, null=True, on_delete=models.SET_NULL, related_name="source_triple")
+    s_uri = models.ForeignKey(SoUris, null=True, on_delete=models.SET_NULL, related_name="source_triple")
+    s_blank = models.ForeignKey(SoBlank, null=True, on_delete=models.SET_NULL, related_name="source_triple")
 
     # predicate
-    p_uri_id = models.ForeignKey(PUris, null=False, on_delete=models.PROTECT)
+    predicate = models.ForeignKey(PUris, null=False, on_delete=models.PROTECT,related_name="triple")
 
     # object
-    o_uri_id = models.ForeignKey(SoUris, null=True, on_delete=models.SET_NULL, related_name="object_triple")
-    o_blank_id = models.ForeignKey(SoBlank, null=True, on_delete=models.SET_NULL, related_name="object_triple")
-    o_lit_id = models.ForeignKey(OLiteral, null=True, on_delete=models.SET_NULL)
-    o_blit_id = models.ForeignKey(BLiteral, null=True, on_delete=models.SET_NULL)
-    o_intlit_id = models.ForeignKey(IntLiteral, null=True, on_delete=models.SET_NULL)
-    o_flit_id = models.ForeignKey(FloatLiteral, null=True, on_delete=models.SET_NULL)
-    o_strlit_id = models.ForeignKey(StrLiteral, null=True, on_delete=models.SET_NULL)
+    o_uri = models.ForeignKey(SoUris, null=True, on_delete=models.SET_NULL, related_name="object_triple")
+    o_blank = models.ForeignKey(SoBlank, null=True, on_delete=models.SET_NULL, related_name="object_triple")
+    o_literal = models.ForeignKey(OLiteral, null=True, on_delete=models.SET_NULL,related_name="object_triple")
+    o_boolean = models.BooleanField( null=True)
+    o_integer = models.ForeignKey(IntLiteral, null=True, on_delete=models.SET_NULL,related_name="object_triple")
+    o_float = models.ForeignKey(FloatLiteral, null=True, on_delete=models.SET_NULL,related_name="object_triple")
 
     # context
-    c_uri_id = models.ForeignKey(CUris, null=True, on_delete=models.SET_NULL)    
+    context = models.ForeignKey(CUris, null=True, on_delete=models.SET_NULL,related_name="context_triple")    
 
