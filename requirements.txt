@@ -32,3 +32,6 @@
 
 # flower the front end for celery
 -e git+ssh://git@github.com/mher/flower.git#egg=flower
+
+# viewflow
+-e git+ssh://git@github.com/viewflow/viewflow.git#egg=viewflow

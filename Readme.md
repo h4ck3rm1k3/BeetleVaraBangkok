@@ -210,3 +210,29 @@ import logging
 log = logging.getLogger('django.db.backends')
 log.setLevel(logging.DEBUG)
 log.addHandler(logging.StreamHandler())
+
+
+# processing
+
+# 
+# provision server
+# setup server
+# checkout git workspace
+
+
+# CMDB
+python tool
+https://github.com/allegro/ralph
+
+to eval
+https://sourceforge.net/projects/i-doit/files/i-doit/1.11/
+https://sourceforge.net/projects/itop/files/itop/2.5.0/
+https://github.com/tumblr/collins
+https://github.com/clusto/clusto
+
+List of projects:
+https://github.com/kahun/awesome-sysadmin#
+
+
+# airflow
+https://github.com/apache/incubator-airflow

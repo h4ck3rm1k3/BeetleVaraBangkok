@@ -13,8 +13,6 @@ class NamedModel(models.Model):
         abstract = True
 
 class SourceSite(NamedModel, StatusModel):
-#    class Meta:
-#        app_label = 'cal'
 
     STATUS = Choices('new','working','failed','not resolving','not responding','noaccess', 'overloaded')
         
@@ -30,6 +28,7 @@ class SourceSite(NamedModel, StatusModel):
     #    'category.Tag',
     #    help_text='Tag this item.'
     #)
+    
 class SourceSiteAdmin(admin.ModelAdmin):
      list_display = ('name', 'website')
         
@@ -41,9 +40,8 @@ class ApiSourceSite(SourceSite):
     description = models.CharField(max_length=200)
     https = models.BooleanField(default=1)
     cors = models.BooleanField(default=1)
-    
-    
 
+    
 class Authentication(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
     """
     Authentication is the base class of all types of authentication, it has a status and time information.
@@ -55,7 +53,6 @@ class Authentication(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel)
     password = models.CharField(max_length=200)
     userid = models.CharField(max_length=100)
     token = models.CharField(max_length=255)
-    
     
 
 class Profile(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
@@ -80,3 +77,29 @@ class AccessSession(StatusModel, TimeFramedModel, TimeStampedModel):
     site = models.ForeignKey(SourceSite,null=True, on_delete=models.SET_NULL)
     auth = models.ForeignKey(Authentication, null=True, on_delete=models.SET_NULL)
     agent = models.ForeignKey(Agent,null=True, on_delete=models.SET_NULL)
+
+    
+class Command(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
+    STATUS = Choices('new','working','failed','not resolving','not responding','noaccess')
+    steps = models.TextField()
+    requirements = models.TextField()
+    results_types = models.TextField()
+    #primary_source = models.ForeignKey(ApiSourceSite, null=True, on_delete=models.SET_NULL)
+    
+class CommandExecution(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
+    STATUS = Choices('new','working','failed','not resolving','not responding','noaccess')
+    trace = models.TextField()
+    inputs = models.TextField()
+    results = models.TextField()
+    primary_source = models.ForeignKey(ApiSourceSite, null=True, on_delete=models.SET_NULL)
+
+class BuildArea(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
+    STATUS = Choices('new','working','failed','not resolving','not responding','noaccess')
+    trace = models.TextField()
+    inputs = models.TextField()
+    results = models.TextField()
+    primary_source = models.ForeignKey(ApiSourceSite, null=True, on_delete=models.SET_NULL)
+    
+
+# Git repository, checkout build
+# Build Directory, share artifacts
