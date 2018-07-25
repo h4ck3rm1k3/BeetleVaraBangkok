@@ -33,7 +33,12 @@ class SourceSiteAdmin(admin.ModelAdmin):
      list_display = ('name', 'website')
         
 class ApiSourceSite(SourceSite):
-
+    """
+    Web Api starting point for another site, Ideally the url will point directly to a machine readable description of the api like a swagger.json
+    """
+    # this api is related to another source site.
+    site = models.ForeignKey(SourceSite,null=True, on_delete=models.SET_NULL)
+    
     # what does this api provide
     # https://www.programmableweb.com/apis/directory
     # https://github.com/toddmotto/public-apis
@@ -62,21 +67,16 @@ class Profile(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
     #sites2 = models.ManyToManyField(SourceSite)
     auth = models.ForeignKey(Authentication, null=True, on_delete=models.SET_NULL)
     STATUS = Choices('new','working','failed','disabled','comprimised')
-    
-class Agent(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
-    """
-    A host/process that runs access to other hosts
-    """
-    STATUS = Choices('new','working','failed','not resolving','not responding','noaccess', 'overloaded')    
 
-class AccessSession(StatusModel, TimeFramedModel, TimeStampedModel):
+class EmailAccount(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):
     """
-    Session to access a website, 
+    an email
     """
-    STATUS = Choices('new','working','failed','not resolving','not responding','noaccess')
-    site = models.ForeignKey(SourceSite,null=True, on_delete=models.SET_NULL)
-    auth = models.ForeignKey(Authentication, null=True, on_delete=models.SET_NULL)
-    agent = models.ForeignKey(Agent,null=True, on_delete=models.SET_NULL)
+    profile = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL,related_name="emails")
+    auth = models.ForeignKey(Authentication, null=True, on_delete=models.SET_NULL,related_name="emails")    
+    STATUS = Choices('new','working','failed','disabled','comprimised')   
+    email = models.CharField(max_length=200)
+
 
     
 class Command(NamedModel, StatusModel, TimeFramedModel, TimeStampedModel):

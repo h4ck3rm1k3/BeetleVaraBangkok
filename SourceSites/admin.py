@@ -4,8 +4,8 @@ from django.contrib import admin
 import SourceSites.models
 import inspect
 for x in [
-        'AccessSession',
-        'Agent',
+#        'AccessSession',
+#        'Agent',
         'ApiSourceSite',
         'Authentication',
         #'Choices',

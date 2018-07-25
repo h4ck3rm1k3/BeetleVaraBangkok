@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'Git',
     'Hosting',
     'Build',
+    'Agents',
     'SourceSites',
     'SwaggerApi',
     'JsonSchema',
